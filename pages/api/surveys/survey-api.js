@@ -1,21 +1,46 @@
-import {apiHandler} from 'helpers/api';
 import {surveyRepo} from 'helpers/survey-creator';
 
-export default apiHandler({
-    post: create_survey, 
-    get: get_survey
-});
+export default handler;
 
-function create_survey(req, res) {
-    const { survey, session } = req.body;
+function handler(req, res) {
+    switch (req.method) {
+        case 'PUT':
+            return postSurvey();
+        case 'GET':
+            return getSurvey();
+        case 'UPDATE':
+            return updateSurvey();
+        default:
+            return res.status(405).end(`Method ${req.method} Not Allowed`)
+    }
 
-    surveyRepo.createSurvey(survey, session);
-    return res.status(200).json({});
-}
+    function postSurvey() {
+        try {
+            surveyRepo.createSurvey(req.query.survey, req.query.session)
+            return res.status(200).json({});
+        } catch (error) {
+            return res.status(400).json({ message: error });
+        }
+    }
 
-function get_survey(req, res) {
-    const { survey, session } = req.body;
+    function getSurvey() {
+        const survey = surveyRepo.getValidSurveys(req.query.user_id);
+        return res.status(200).json(survey);
+    }
 
-    surveyRepo.createSurvey(survey, session);
-    return res.status(200).json({});
+    function updateSurvey() {
+        try {
+            surveyRepo.removeUser(req.query.survey_id, req.query.user_id);
+            return res.status(200).json({});
+        } catch (error) {
+            return res.status(400).json({ message: error });
+        }
+    }
+
+    /*
+    function deleteSurvey() {
+        surveyRepo.delete(req.query.id);
+        return res.status(200).json({});
+    }
+    */
 }

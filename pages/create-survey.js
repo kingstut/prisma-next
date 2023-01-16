@@ -1,7 +1,9 @@
 import Layout from "../components/layout"
 import { useSession } from "next-auth/react"
-import {create_survey} from "api/survey-api"
 import SurveyForm from "../components/SurveyForm"
+
+import { handleResponse} from "helpers/api"
+const fetch = require('node-fetch');
 
 export default function CreateSurveyPage() {
   const { session } = useSession()
@@ -9,7 +11,10 @@ export default function CreateSurveyPage() {
   async function handleOnSubmit(data, e) {
     e.preventDefault();
 
-    await create_survey({data, session});
+    //data should be   {question:,  budget: , cpr: }
+  
+    fetch('/api/surveys/survey-api', 
+    {method: 'PUT', query: {survey: data, session: session}}).then(handleResponse)
 
   }
 
@@ -17,7 +22,7 @@ export default function CreateSurveyPage() {
     <Layout>
       <h1>Create a Survey</h1>
       <p>
-        <em>You must be signed in to create a survey.</em>
+      You must be signed in to create a survey.
       </p>
       <p>Input your question:</p>
 

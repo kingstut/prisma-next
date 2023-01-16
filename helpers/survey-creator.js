@@ -21,7 +21,7 @@ function createSurvey(survey, session) {
     // generate new survey id
     survey.survey_id = surveys.length ? Math.max(...surveys.map(x => x.id)) + 1 : 1;
     survey.user_id = session.user.email
-    survey.question = survey.questions
+    survey.question = survey.question
     survey.show_to_users = userRepo.getAllUsers().map((user) => user.user_id)
     survey.closed = false
     survey.budget = survey.budget

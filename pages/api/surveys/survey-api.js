@@ -9,13 +9,13 @@ export default apiHandler({
 function create_survey(req, res) {
     const { survey, session } = req.body;
 
-    usersRepo.createSurvey(survey, session);
+    surveyRepo.createSurvey(survey, session);
     return res.status(200).json({});
 }
 
 function get_survey(req, res) {
     const { survey, session } = req.body;
 
-    usersRepo.createSurvey(survey, session);
+    surveyRepo.createSurvey(survey, session);
     return res.status(200).json({});
 }

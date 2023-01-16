@@ -1,1 +1,10 @@
-[]
+{
+    "survey_id": ,
+    "user_id": , 
+    "question": "",
+    "show_to_users": [],
+    "closed": ,
+    "budget": ,
+    "cpr": , 
+    "verified_res":[]
+}

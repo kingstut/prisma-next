@@ -1,0 +1,11 @@
+{
+    "user_id": , 
+    "money": ,
+    "responses": [
+        {"survey_id":, 
+        "reponded": , 
+        "verified":,
+        "paid": ,
+        }
+    ]
+}

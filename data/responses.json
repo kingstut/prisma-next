@@ -1,0 +1,16 @@
+{"res": [
+    {
+        "survey_id": , 
+        "survey_res": [ 
+            {
+            "user_id":, 
+            "answer":, 
+            "verified": [], 
+            "valid": , 
+            "paid":
+            },
+        ]
+    },
+
+
+]}

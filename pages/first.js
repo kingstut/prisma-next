@@ -2,7 +2,6 @@ import React from 'react'
 import Head from 'next/head'
 import Layout from '../components/layout'
 import { Button, Col, Row } from 'react-bootstrap'
-import styles from '../styles/First.module.css'
 export default function first() {
     return (
         <Layout>

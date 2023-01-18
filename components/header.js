@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { signIn, signOut, useSession } from "next-auth/react"
 import styles from "./header.module.css"
-
+import {Container, Navbar, Button, Nav, NavDropdown, Row, Col} from 'react-bootstrap'
 // The approach used in this component shows how to build a sign in and sign out
 // component that works on pages which support both client and server side
 // rendering, and avoids any flash incorrect content on initial page load.
@@ -14,69 +14,33 @@ export default function Header() {
       <noscript>
         <style>{`.nojs-show { opacity: 1; top: 0; }`}</style>
       </noscript>
-      <div className={styles.signedInStatus}>
-        <p
-          className={`nojs-show ${
-            !session && loading ? styles.loading : styles.loaded
-          }`}
-        >
-          {!session && (
-            <>
-              <span className={styles.notSignedInText}>
-                You are not signed in
-              </span>
-              <a
-                href={`/api/auth/signin`}
-                className={styles.buttonPrimary}
-                onClick={(e) => {
-                  e.preventDefault()
-                  signIn()
-                }}
-              >
-                Sign in
-              </a>
-            </>
-          )}
-          {session?.user && (
-            <>
-              {session.user.image && (
-                <span
-                  style={{ backgroundImage: `url('${session.user.image}')` }}
-                  className={styles.avatar}
-                />
-              )}
-              <span className={styles.signedInText}>
-                <small>Signed in as</small>
-                <br />
-                <strong>{session.user.email ?? session.user.name}</strong>
-              </span>
-              <a
-                href={`/api/auth/signout`}
-                className={styles.button}
-                onClick={(e) => {
-                  e.preventDefault()
-                  signOut()
-                }}
-              >
-                Sign out
-              </a>
-            </>
-          )}
-        </p>
-      </div>
-      <nav>
-        <ul className={styles.navItems}>
-          <li className={styles.navItem}>
-            <Link href="/">Home</Link>
-          </li>
-          <li className={styles.navItem}>
-            <Link href="/api-example">API</Link>
-          </li>
-          <li className={styles.navItem}>
-            <Link href="/me">Me</Link>
-          </li>
-        </ul>
-      </nav>
+      {/* <!-- Navbar Start --> */}
+
+      <Navbar bg="dark" expand="lg" variant="dark">
+      <Container>
+        <Navbar.Brand href="#home" pl='5'> <span className={`${styles.nav_title}`}>Whole Foods</span> <br/> <span className={`${styles.nav_sub_title} `}>Food Marketplace</span></Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse className="justify-content-center">
+          <Nav className="margin-left-auto">
+          <span className="border border-white"><Button variant="link" className="text-white text-decoration-none">Dashboard</Button> </span>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+
+      {/* <Navbar bg="dark" variant="dark">
+      <Container>
+        <Navbar.Brand classname='text-white text-end'>Whole Foods</Navbar.Brand>
+        <Navbar.Toggle />
+        <Navbar.Collapse className="justify-content-end">
+          <Navbar.Text>
+           <Button>Login</Button>
+          </Navbar.Text>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar> */}
+
+    {/* <!-- Navbar End --> */}
     </header>
   )
 }

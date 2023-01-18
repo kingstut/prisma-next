@@ -18,6 +18,8 @@ const SurveyForm = ({ onSubmit }) => {
     return (
       <form onSubmit={handleOnSubmit}>
         <textarea name="question"></textarea>
+        <textarea name="budget"></textarea>
+        <textarea name="cpr"></textarea>
         <button>Create Survey</button>
       </form>
     )

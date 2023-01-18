@@ -6,23 +6,18 @@ import GetFormList from "../components/GetFormList"
 
 const fetch = require('node-fetch');
 
-export default function GetSurveyPage() {
+export default function GetSurveyPage({surveys}) {
   const { session } = useSession()
   
-  async function handleOnSubmit({survey_id, data}, e) {
+  async function handleOnSubmit({survey, data}, e) {
     e.preventDefault();
-
-    await create_data({data, session});
-    query = { survey_id: survey_id, 
+    query = { survey_id: survey.survey_id, 
               response: 
               { user_id: session.user.email, 
                 answer: data}
             }
     fetch('/api/responses/response-api', {method: 'PUT', query: query}).then(handleResponse)
   }
-
-  const surveys = fetch('/api/surveys/survey-api', 
-  {method: 'GET', query: {user_id: session.user.email}}).then(handleResponse)
 
   return (
     <Layout>
@@ -37,4 +32,14 @@ export default function GetSurveyPage() {
 
     </Layout>
   )
+}
+
+export async function getServerSideProps() {
+  // Fetch data from external API
+  const res = await fetch('/api/surveys/survey-api', 
+  {method: 'GET', query: {user_id: session.user.email}}).then(handleResponse)
+  const surveys = await res.json()
+
+  // Pass data to the page via props
+  return { props: { surveys } }
 }

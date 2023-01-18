@@ -1,10 +1,10 @@
 const GetFormList = ({surveys, onSubmit}) => {
   
     return (
-        <ul className={styles.posts}>
+        <ul>
           {surveys.map(survey => {
             return (
-              <li key={id}>
+              <li>
                 <GetForm
                   question = {survey}
                   onSubmit = {onSubmit}

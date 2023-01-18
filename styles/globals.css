@@ -105,3 +105,16 @@ a {
     color-scheme: dark;
   }
 }
+
+.first_div{
+  height: 50vh;
+  width: 100%;
+}
+
+.sixth_div{
+  height: "30vh";
+  width: "25vh";
+  margin-left: "40px";
+  margin-top: "40px";
+  border-radius: "5px";
+}

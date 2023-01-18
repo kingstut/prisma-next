@@ -31,7 +31,7 @@ export default function IndexPage() {
 export const getStaticProps = async () => {
 
   const users = await prisma.user.findMany()
-  console.log('users list', users)
+  console.log('users', users)
   // const feed = await prisma.user.findMany({
   //   where: { published: true },
   //   include: {

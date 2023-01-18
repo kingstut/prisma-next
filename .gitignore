@@ -7,6 +7,8 @@
 # /upload/training_video
 # /upload/blog
 
+# Next build dir
+.next/
 # testing
 /coverage
 

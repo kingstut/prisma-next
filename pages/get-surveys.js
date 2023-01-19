@@ -1,5 +1,5 @@
 import Layout from "../components/layout"
-import { handleResponse} from "helpers/api"
+import { handleResponse} from "../helpers/api"
 import { useSession } from "next-auth/react"
 
 import GetFormList from "../components/GetFormList"

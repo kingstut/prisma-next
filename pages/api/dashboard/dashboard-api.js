@@ -1,4 +1,4 @@
-import {userRepo} from 'helpers/user-creator';
+import {userRepo} from '../../../helpers/user-creator';
 
 export default handler;
 
@@ -13,8 +13,11 @@ function handler(req, res) {
     }
 
     function postUser() {
-        try {
-            userRepo.createUser(req.query.user, req.query.session)
+
+        try { 
+            const email = JSON.parse(req.body)["session"]["session"]["user"]["email"]
+            userRepo.createUser(email)
+            //userRepo.createUser(req.query.session)
             return res.status(200).json({});
         } catch (error) {
             return res.status(400).json({ message: error });

@@ -1,11 +1,7 @@
-{
-    "user_id": , 
-    "money": ,
-    "responses": [
-        {"survey_id":, 
-        "reponded": , 
-        "verified":,
-        "paid": ,
-        }
-    ]
-}
+[
+    {
+        "user_id": "stutiraizada2000@gmail.com",
+        "money": 0,
+        "responses": []
+    }
+]

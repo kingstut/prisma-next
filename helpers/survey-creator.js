@@ -3,7 +3,7 @@ import { responseRepo } from './response-creator';
 const fs = require('fs');
 
 // users in JSON file for simplicity, store in a db for production applications
-let surveys= require('data/surveys.json');
+let surveys= require('../data/surveys.json');
 
 export const surveyRepo = {
     getAllSurveys: () => surveys,
@@ -19,19 +19,20 @@ export const surveyRepo = {
 
 function createSurvey(survey, session) {
     // generate new survey id
-    survey.survey_id = surveys.length ? Math.max(...surveys.map(x => x.id)) + 1 : 1;
-    survey.user_id = session.user.email
-    survey.question = survey.question
-    survey.show_to_users = userRepo.getAllUsers().map((user) => user.user_id)
-    survey.closed = false
-    survey.budget = survey.budget
-    survey.cpr = survey.cpr
-    survey.verified_res = []
+    const new_survey = {
+        survey_id: surveys.length ? Math.max(...surveys.map(x => x.id)) + 1 : 1 ,
+        user_id: session.user.email,
+        question : survey.question,
+        show_to_users : userRepo.getAllUsers().map((user) => user.user_id),
+        closed :false,
+        budget : survey.budget,
+        cpr : survey.cpr,
+        verified_res : [] }
 
     // add and save user
-    surveys.push(survey);
+    surveys.push(new_survey);
 
-    responseRepo.createResponse(survey.survey_id, [])
+    responseRepo.createResponse(new_survey.survey_id, [])
     saveData()
 }
 

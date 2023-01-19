@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 // users in JSON file for simplicity, store in a db for production applications
-let users= require('data/users.json');
+let users= require('../data/users.json');
 
 export const userRepo = {
     getAllUsers: () => users,
@@ -13,15 +13,26 @@ export const userRepo = {
     updateVerfied
 }
 
-function createUser(user, session) {
-    // generate new user id
-    user.user_id = session.user.email
-    user.money = 0 
-    user.responses = []
+function checkIfExists(email) {
+    for (x of users) {
+        if (x.user_id.toString() === user_id.toString())
+            return true 
+    }
+    return false
+}
 
-    // add and save user
-    users.push(user)
-    saveData()
+function createUser(session) {
+    // generate new user id
+
+    if (!checkIfExists(session)) 
+    {   
+        const user = {user_id: session, money: 0, responses: []}
+
+        // add and save user
+        users.push(user)
+        saveData()
+
+    }
 }
 
 function checkPayment(user_id){

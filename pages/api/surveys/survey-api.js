@@ -1,4 +1,4 @@
-import {surveyRepo} from 'helpers/survey-creator';
+import {surveyRepo} from '../../../helpers/survey-creator';
 
 export default handler;
 
@@ -16,6 +16,12 @@ function handler(req, res) {
 
     function postSurvey() {
         try {
+            const email = JSON.parse(req.body)["session"]["session"]["user"]["email"]
+            const data = JSON.parse(req.body)["data"]["data"]
+
+            console.log(email)
+            console.log(data)
+
             surveyRepo.createSurvey(req.query.survey, req.query.session)
             return res.status(200).json({});
         } catch (error) {

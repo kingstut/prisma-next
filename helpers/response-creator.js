@@ -4,7 +4,7 @@ import { userRepo } from './user-creator';
 const fs = require('fs');
 
 // users in JSON file for simplicity, store in a db for production applications
-let responses= require('data/responses.json');
+let responses= require('../data/responses.json');
 
 export const responseRepo = {
     getAllresponses: () => responses,
@@ -43,7 +43,7 @@ function addToVerified(survey_id, user_id, verifier_id, verification) {
     this_res.verified.push({verifier_id: verifier_id, verification: verification})
 
     if (this_res.verified.length === 3) {
-        const num_zero = 0 
+        let num_zero = 0 
         for (v of this_res.verified) {
             if (v.verification === 0) {
                 num_zero++;

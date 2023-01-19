@@ -1,0 +1,39 @@
+{"res": [
+    {
+        "survey_id": , 
+        "survey_res": [ 
+            {
+            "user_id":, 
+            "answer":, 
+            "verified": [], 
+            "valid": , 
+            "paid":
+            },
+        ]
+    },
+
+
+]}
+
+
+{
+    "survey_id": ,
+    "user_id": , 
+    "question": "",
+    "show_to_users": [],
+    "closed": ,
+    "budget": ,
+    "cpr": , 
+    "verified_res":[]
+}
+{
+    "user_id": , 
+    "money": ,
+    "responses": [
+        {"survey_id":, 
+        "reponded": , 
+        "verified":,
+        "paid": ,
+        }
+    ]
+}

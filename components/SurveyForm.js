@@ -1,5 +1,6 @@
 const SurveyForm = ({ onSubmit }) => {
     function handleOnSubmit(e) {
+      console.log("CALLED")
       const { currentTarget } = e;
   
       const fields = Array.from(currentTarget.elements);

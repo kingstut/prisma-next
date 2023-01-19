@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { signIn, signOut, useSession } from "next-auth/react"
-import styles from "styles/header.module.css"
+import styles from "../styles/header.module.css"
+import { handleResponse} from "../helpers/api"
 
 // The approach used in this component shows how to build a sign in and sign out
 // component that works on pages which support both client and server side
@@ -34,7 +35,10 @@ export default function Header() {
               </a>
             </>
           )}
-          {session?.user && (
+          {session?.user  
+          && (
+            fetch('http://localhost:3000/api/dashboard/dashboard-api', 
+            {method: 'PUT', body: JSON.stringify({session: {session}})}).then(handleResponse) ) && (
             <>
               {session.user.image && (
                 <span

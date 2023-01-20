@@ -1,0 +1,52 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Response {
+  response_id Int 
+  survey_id String
+  user_id String 
+  answer String
+  verified String
+  valid Boolean
+  paid Boolean
+
+  @@id([survey_id, user_id])
+
+}
+
+model Survey {
+    survey_id String @id
+    user_id String
+    question String 
+    show_to_users String[]
+    closed Boolean
+    budget Float
+    cpr Float
+    verified_res String[]
+}
+
+model User {
+    user_id String @id
+    money Float @default(0)
+    responses Answer[]  
+}
+
+model Answer{
+  survey_id String 
+  reponded Int
+  verified Int
+  paid Boolean 
+  author User@relation(fields: [authorId], references: [user_id])
+  authorId String 
+  @@id([survey_id, authorId])
+}
+

@@ -3,6 +3,8 @@ import { signIn, signOut, useSession } from "next-auth/react"
 import styles from "../styles/header.module.css"
 import { handleResponse} from "../helpers/api"
 
+import axios from 'axios'
+
 // The approach used in this component shows how to build a sign in and sign out
 // component that works on pages which support both client and server side
 // rendering, and avoids any flash incorrect content on initial page load.
@@ -37,8 +39,8 @@ export default function Header() {
           )}
           {session?.user  
           && (
-            fetch('http://localhost:3000/api/dashboard/dashboard-api', 
-            {method: 'PUT', body: JSON.stringify({session: {session}})}).then(handleResponse) ) && (
+            axios.post('http://localhost:3000/api/dashboard/dashboard-api', 
+            { session } ).then(handleResponse) ) && (
             <>
               {session.user.image && (
                 <span

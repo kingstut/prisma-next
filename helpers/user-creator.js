@@ -1,3 +1,4 @@
+import { prisma } from '../../server/db/client'
 const fs = require('fs');
 
 // users in JSON file for simplicity, store in a db for production applications
@@ -5,7 +6,11 @@ let users= require('../data/users.json');
 
 export const userRepo = {
     getAllUsers: () => users,
-    getUserById: user_id => users.find(x => x.user_id.toString() === user_id.toString()),
+    getUserById: async (user_id) => await prisma.user.findUnique({
+        where: {
+          user_id: user_id,
+        },
+      }),
     createUser,
     checkPayment,
     addNewRes,
@@ -13,30 +18,35 @@ export const userRepo = {
     updateVerfied
 }
 
-function checkIfExists(email) {
-    for (x of users) {
-        if (x.user_id.toString() === user_id.toString())
-            return true 
-    }
-    return false
+async function checkIfExists(email) {
+    await prisma.user.count(
+        {
+          where: {
+            user_id: email
+          }
+        }
+    )
+    return placeCount>0 
 }
 
-function createUser(session) {
+async function createUser(session) {
     // generate new user id
-
     if (!checkIfExists(session)) 
     {   
-        const user = {user_id: session, money: 0, responses: []}
-
-        // add and save user
-        users.push(user)
-        saveData()
-
+        await prisma.user.create({
+            data: {
+                session,
+            },
+          })
     }
 }
 
-function checkPayment(user_id){
-    const user = getUserById(user_id)
+async function checkPayment(user_id){
+    const user = await prisma.user.findUnique({
+        where: {
+          user_id: user_id,
+        },
+      })
     for (res of user.responses) {
         if (res.paid == false){
             if (res.responded===-1 || res.verified === -1){

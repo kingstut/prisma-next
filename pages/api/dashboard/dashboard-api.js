@@ -4,7 +4,7 @@ export default handler;
 
 function handler(req, res) {
     switch (req.method) {
-        case 'PUT':
+        case 'POST':
             return postUser();
         case 'GET':
             return getUser();
@@ -15,7 +15,8 @@ function handler(req, res) {
     function postUser() {
 
         try { 
-            const email = JSON.parse(req.body)["session"]["session"]["user"]["email"]
+            const { session } = req.body
+            const email = session.user.body //JSON.parse(req.body)["session"]["session"]["user"]["email"]
             userRepo.createUser(email)
             //userRepo.createUser(req.query.session)
             return res.status(200).json({});

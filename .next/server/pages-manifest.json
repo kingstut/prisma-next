@@ -2,8 +2,9 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/create-survey": "pages/create-survey.js",
   "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js",
-  "/": "pages/index.js",
-  "/api/dashboard/dashboard-api": "pages/api/dashboard/dashboard-api.js"
+  "/get-surveys": "pages/get-surveys.js",
+  "/api/responses/response-api": "pages/api/responses/response-api.js",
+  "/api/dashboard/dashboard-api": "pages/api/dashboard/dashboard-api.js",
+  "/api/surveys/[em]": "pages/api/surveys/[em].js"
 }

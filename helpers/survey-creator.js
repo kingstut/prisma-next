@@ -7,21 +7,29 @@ let surveys= require('../data/surveys.json');
 
 export const surveyRepo = {
     getAllSurveys: () => surveys,
-    getSurveyById: survey_id => surveys.find(x => x.survey_id.toString() === survey_id.toString()),
+    getSurveyById,
     getSurveyByUser: user_id => surveys.find(x => x.user_id.toString() === user_id.toString()),
     findSurvey: x => surveys.find(x),
     createSurvey,
     addValidResponse,
     closeSurvey,
-    getValidSurveys: user_id => surveys.find(x => x.show_to_users.includes(user_id)),
+    getValidSurveys,
     removeUser
 };
 
+async function getSurveyById(survey_id){
+    const survey = await prisma.survey.findUnique({
+         where: {
+            survey_id: survey_id
+         }
+    })
+    return survey
+}
+
+
 async function createSurvey(email, rec_data) {
     // add and save user
-    console.log("REC DATA", rec_data)
     const users = await userRepo.getAllUsers()
-    console.log(users)
     await prisma.survey.create({
         data: {
             user_id: email,
@@ -34,6 +42,19 @@ async function createSurvey(email, rec_data) {
         },
       })
 
+}
+
+async function getValidSurveys(email){
+    const surveys = await prisma.survey.findMany({
+        where: {
+          show_to_users: {
+            has: email,
+          },
+        },
+      })
+
+    return surveys
+    
 }
 
 
@@ -52,11 +73,20 @@ function closeSurvey(survey_id) {
     saveData()
 }
 
-function removeUser(survey_id, user_id){
-    urv = surveyRepo.getSurveyById(survey_id)
+async function removeUser(survey_id, user_id){
+    const surv = await surveyRepo.getSurveyById(survey_id)
     const index = surv.show_to_users.indexOf(user_id);
     delete surv.show_to_users[index]
-    saveData()
+
+    await prisma.survey.update({
+        where: {
+          survey_id: survey_id,
+        },
+        data: {
+            show_to_users: surv.show_to_users,
+        },
+      })
+      console.log("DONE")
 }
 
 // private helper functions

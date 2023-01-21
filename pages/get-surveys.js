@@ -1,23 +1,33 @@
 import Layout from "../components/layout"
 import { handleResponse} from "../helpers/api"
-import { useSession } from "next-auth/react"
+import { useSession, getSession } from "next-auth/react"
 
 import GetFormList from "../components/GetFormList"
+import axios from "axios"
 
-const fetch = require('node-fetch');
-
-export default function GetSurveyPage({surveys}) {
-  const { session } = useSession()
-  
-  async function handleOnSubmit({survey, data}, e) {
-    e.preventDefault();
-    query = { survey_id: survey.survey_id, 
-              response: 
-              { user_id: session.user.email, 
-                answer: data}
-            }
-    fetch('/api/responses/response-api', {method: 'PUT', query: query}).then(handleResponse)
+export function showToVerify(){
+  console.log("TESTING INSIDE")
+  return (
+  <p> FORM SUBMITTED </p>
+  )
   }
+export default function GetSurveyPage({surveys}) {
+  
+  const { data: session } = useSession()
+  
+  async function handleOnSubmit({question: question, data}, e) {
+    console.log("TESTING")
+    //showToVerify()
+    e.preventDefault();
+    //fetch('/api/responses/response-api', {method: 'PUT', query: query}).then(handleResponse)
+    await axios.post('http://localhost:3000/api/responses/response-api', 
+    { session, question, data } ).then(handleResponse)
+    console.log("TESTING INSIDE")
+    return (
+      <p> FORM SUBMITTED </p>
+      )
+    }
+
 
   return (
     <Layout>
@@ -34,10 +44,13 @@ export default function GetSurveyPage({surveys}) {
   )
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
   // Fetch data from external API
-  const res = await fetch('/api/surveys/survey-api', 
-  {method: 'GET', query: {user_id: session.user.email}}).then(handleResponse)
+  const session = await getSession(context)
+  const em = session.user.email
+  //const res = await axios.get('http://localhost:3000/api/surveys/', 
+  // { params: {em: email} } ).then(handleResponse)
+  const res = await fetch(`http://localhost:3000/api/surveys/${em}`).then(handleResponse)
   const surveys = await res.json()
 
   // Pass data to the page via props

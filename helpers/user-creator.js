@@ -1,4 +1,5 @@
 import { prisma } from '../server/db/client'
+import { surveyRepo } from './survey-creator';
 const fs = require('fs');
 
 // users in JSON file for simplicity, store in a db for production applications
@@ -57,35 +58,67 @@ async function createUser(session) {
 }
 
 async function checkPayment(user_id){
-    const user = await prisma.user.findUnique({
-        where: {
-          user_id: user_id,
-        },
-      })
+    const user = userRepo.getUserById(user_id)
     for (res of user.responses) {
         if (res.paid == false){
             if (res.responded===-1 || res.verified === -1){
                 res.paid == true
+                await prisma.answer.update({
+                    where: {
+                        user_id: user_id,
+                        survey_id: res.survey_id
+                    },
+                    data: {
+                        paid: true
+                    }
+                })
             }
             else if (res.responded===1 && res.verified === 1){
-                res.paid == true
-                user.money += res.to_pay
+                await prisma.answer.update({
+                    where: {
+                        user_id: user_id,
+                        survey_id: res.survey_id
+                    },
+                    data: {
+                        paid: true
+                    }
+                })
+                await prisma.user.update({
+                    where: {
+                        user_id: user_id,
+                    },
+                    data: {
+                        money: user.money + res.cpr
+                    }
+                })
+                
             }
         }
     }
-    saveData()
+    
 }
 
-function addNewRes(user_id, survey_id){
-    surv = surveyRepo.getSurveyById(survey_id)
-    this_user = userRepo.getResponseBySurveyId(user_id)
-    new_user_res = {survey_id: survey_id,
-                    responded: 0,
-                    verified: 0, 
-                    paid: false, 
-                    to_pay: surv.cpr}
-    this_user.responses.push(new_user_res)
-    saveData()
+async function addNewRes(user_id, survey_id){
+    const surv = await surveyRepo.getSurveyById(survey_id)
+    const this_user = await userRepo.getUserById(user_id)
+    const answers = this_user.responses
+    const new_answer = await prisma.answer.create({
+        data: {
+            survey_id: survey_id,
+            cpr: surv.cpr,
+            authorId: user_id
+        },
+    })
+    answers.push(new_answer)
+    await prisma.user.update({
+        where: {
+            user_id: user_id
+        },
+        data: {
+            responses: answers
+        }
+    })
+    
 }
 
 function updateResponded(user_id, survey_id, value){

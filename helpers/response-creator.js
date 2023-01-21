@@ -1,6 +1,6 @@
 import { surveyRepo } from './survey-creator';
 import { userRepo } from './user-creator';
-
+import { prisma } from '../server/db/client'
 const fs = require('fs');
 
 // users in JSON file for simplicity, store in a db for production applications
@@ -14,26 +14,22 @@ export const responseRepo = {
     addToVerified
 };
 
-function createResponse(survey_id, response) {
-    this_survey = getResponseBySurveyId(survey_id)
-    if (response.length === 0) {
-        this_survey.survey_res = [];
-    }
-    else {
-    const new_res  = { user_id: response.user_id,
-                        answer: response.answer, 
-                        verified: [], 
-                        valid: 0}
+async function createResponse(survey_id, answer, user_id) {
     // add and save res
-    this_survey.survey_res.push(new_res)
+    await prisma.response.create({
+        data: {
+            survey_id: survey_id,
+            user_id : user_id,
+            answer : answer,
+        },
+      })
 
     // add res for user 
-    userRepo.addNewRes(response.user_id, survey_id)
+    userRepo.addNewRes(user_id, survey_id)
     
     //stop showing this survey to this user
-    surveyRepo.removeUser(survey_id, response.user_id)
-    }
-    saveData()
+    surveyRepo.removeUser(survey_id, user_id)
+
 }
 
 function addToVerified(survey_id, user_id, verifier_id, verification) {

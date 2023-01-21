@@ -1,4 +1,4 @@
-const GetForm = ({survey, onSubmit }) => {
+const GetForm = ({question, onSubmit} ) => {
     function handleOnSubmit(e) {
       const { currentTarget } = e;
   
@@ -11,14 +11,14 @@ const GetForm = ({survey, onSubmit }) => {
       })
   
       if ( typeof onSubmit === 'function' ) {
-        onSubmit({survey, data}, e)
+        onSubmit({question, data}, e)
       }
     }
-  
+    //console.log("GET FORM SURVEYS", question)
     return (
      <form onSubmit={handleOnSubmit}>
-        <p> {survey.question} </p>
-        <textarea name="question"></textarea>
+        <p> {question.question} </p>
+        <textarea name="answer"></textarea>
         <button>Submit</button>
       </form>
     )

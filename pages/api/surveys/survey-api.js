@@ -6,8 +6,6 @@ function handler(req, res) {
     switch (req.method) {
         case 'POST':
             return postSurvey();
-        case 'GET':
-            return getSurvey();
         case 'UPDATE':
             return updateSurvey();
         default:
@@ -24,11 +22,6 @@ function handler(req, res) {
         } catch (error) {
             return res.status(400).json({ message: error });
         }
-    }
-
-    function getSurvey() {
-        const survey = surveyRepo.getValidSurveys(req.query.user_id);
-        return res.status(200).json(survey);
     }
 
     function updateSurvey() {

@@ -11,13 +11,12 @@ datasource db {
 }
 
 model Response {
-  response_id Int 
-  survey_id String
+  survey_id Int
   user_id String 
   answer String
-  verified String
-  valid Boolean
-  paid Boolean
+  verified Int[] @default([])
+  valid Boolean @default(false)
+  paid Boolean @default(false)
 
   @@id([survey_id, user_id])
 
@@ -41,12 +40,13 @@ model User {
 }
 
 model Answer{
-  survey_id String 
-  reponded Int
-  verified Int
-  paid Boolean 
+  survey_id Int 
+  reponded Int @default(0)
+  verified Int @default(0)
+  paid Boolean @default(false)
   author User@relation(fields: [authorId], references: [user_id])
   authorId String 
+  cpr Float
   @@id([survey_id, authorId])
 }
 

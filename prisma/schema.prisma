@@ -24,7 +24,7 @@ model Response {
 }
 
 model Survey {
-    survey_id String @id
+    survey_id Int @id @default(autoincrement())
     user_id String
     question String 
     show_to_users String[]

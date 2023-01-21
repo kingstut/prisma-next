@@ -3,6 +3,8 @@ import { useSession } from "next-auth/react"
 import SurveyForm from "../components/SurveyForm"
 
 import { handleResponse} from "../helpers/api"
+import axios from "axios"
+
 //const fetch = require('node-fetch');
 
 export default function CreateSurveyPage() {
@@ -14,9 +16,8 @@ export default function CreateSurveyPage() {
     e.preventDefault();
 
     //data should be   {question:,  budget: , cpr: }
-
-    fetch('http://localhost:3000/api/surveys/survey-api', 
-    {method: 'PUT', body: JSON.stringify({data: {data}, session: {session}})}).then(handleResponse)
+    axios.post('http://localhost:3000/api/surveys/survey-api', 
+    { session, data } ).then(handleResponse)
 
   }
 

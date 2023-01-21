@@ -15,8 +15,9 @@ function handler(req, res) {
     function postUser() {
 
         try { 
-            const { session } = req.body
-            const email = session.user.body //JSON.parse(req.body)["session"]["session"]["user"]["email"]
+            //console.log("req body", req.body)
+            const { session: session } = req.body
+            const email = session.user.email //JSON.parse(req.body)["session"]["session"]["user"]["email"]
             userRepo.createUser(email)
             //userRepo.createUser(req.query.session)
             return res.status(200).json({});

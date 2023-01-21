@@ -2,5 +2,8 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/create-survey": "pages/create-survey.js"
+  "/create-survey": "pages/create-survey.js",
+  "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js",
+  "/": "pages/index.js",
+  "/api/dashboard/dashboard-api": "pages/api/dashboard/dashboard-api.js"
 }

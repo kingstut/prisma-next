@@ -1,7 +1,7 @@
 import {userRepo} from './user-creator';
 import { responseRepo } from './response-creator';
 const fs = require('fs');
-
+import { prisma } from '../server/db/client'
 // users in JSON file for simplicity, store in a db for production applications
 let surveys= require('../data/surveys.json');
 
@@ -17,23 +17,23 @@ export const surveyRepo = {
     removeUser
 };
 
-function createSurvey(survey, session) {
-    // generate new survey id
-    const new_survey = {
-        survey_id: surveys.length ? Math.max(...surveys.map(x => x.id)) + 1 : 1 ,
-        user_id: session.user.email,
-        question : survey.question,
-        show_to_users : userRepo.getAllUsers().map((user) => user.user_id),
-        closed :false,
-        budget : survey.budget,
-        cpr : survey.cpr,
-        verified_res : [] }
-
+async function createSurvey(email, rec_data) {
     // add and save user
-    surveys.push(new_survey);
+    console.log("REC DATA", rec_data)
+    const users = await userRepo.getAllUsers()
+    console.log(users)
+    await prisma.survey.create({
+        data: {
+            user_id: email,
+            question : rec_data.question,
+            show_to_users : users.map((user) => user.user_id),
+            closed :false,
+            budget : parseFloat(rec_data.budget),
+            cpr : parseFloat(rec_data.cpr),
+            verified_res : [] 
+        },
+      })
 
-    responseRepo.createResponse(new_survey.survey_id, [])
-    saveData()
 }
 
 

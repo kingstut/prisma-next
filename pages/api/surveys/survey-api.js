@@ -4,7 +4,7 @@ export default handler;
 
 function handler(req, res) {
     switch (req.method) {
-        case 'PUT':
+        case 'POST':
             return postSurvey();
         case 'GET':
             return getSurvey();
@@ -16,13 +16,10 @@ function handler(req, res) {
 
     function postSurvey() {
         try {
-            const email = JSON.parse(req.body)["session"]["session"]["user"]["email"]
-            const data = JSON.parse(req.body)["data"]["data"]
+            const { session:session , data } = req.body
+            const email = session.user.email
 
-            console.log(email)
-            console.log(data)
-
-            surveyRepo.createSurvey(req.query.survey, req.query.session)
+            surveyRepo.createSurvey(email, data)
             return res.status(200).json({});
         } catch (error) {
             return res.status(400).json({ message: error });

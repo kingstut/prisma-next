@@ -1,11 +1,11 @@
-import { prisma } from '../../server/db/client'
+import { prisma } from '../server/db/client'
 const fs = require('fs');
 
 // users in JSON file for simplicity, store in a db for production applications
 let users= require('../data/users.json');
 
 export const userRepo = {
-    getAllUsers: () => users,
+    getAllUsers,
     getUserById: async (user_id) => await prisma.user.findUnique({
         where: {
           user_id: user_id,
@@ -18,24 +18,39 @@ export const userRepo = {
     updateVerfied
 }
 
+async function getAllUsers() {
+    const users = await prisma.user.findMany()
+    return users
+    /*
+    var user_emails = []
+    for (u of users) {
+        user_emails.push(u.user_id)
+    }
+    return user_emails
+    */
+}
+
 async function checkIfExists(email) {
-    await prisma.user.count(
+    //console.log("EMAIL", email)
+    const placeCount = await prisma.user.count(
         {
           where: {
             user_id: email
           }
         }
     )
+    //console.log("placeCount ", placeCount)
     return placeCount>0 
 }
 
 async function createUser(session) {
     // generate new user id
-    if (!checkIfExists(session)) 
-    {   
+
+    if (checkIfExists(session) !== true) 
+    {   //console.log("STILL GOING")
         await prisma.user.create({
             data: {
-                session,
+                user_id: session,
             },
           })
     }
